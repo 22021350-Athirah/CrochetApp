@@ -22,10 +22,15 @@ const connection = mysql.createConnection({
     //password: '', // Replace with your MySQL password if any
     //database: 'cloudy_crochet'
 
-    host: 'sql.freedb.tech',
-    user: 'freedb_athirah',
-    password: '$G7nUHGGy3#KE8S', 
-    database: 'freedb_crochetapp'
+    //host: 'sql.freedb.tech',
+    //user: 'freedb_athirah',
+    //password: '$G7nUHGGy3#KE8S', 
+    //database: 'freedb_crochetapp'
+
+    host: 'db4free.net',
+    user: 'crochetapp',
+    password: 'crochetapp', 
+    database: 'crochetapp'
 });
 
 // Connect to MySQL database
