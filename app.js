@@ -17,10 +17,15 @@ const upload = multer({ storage: storage });
 
 // Create MySQL connection
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '', // Replace with your MySQL password if any
-    database: 'cloudy_crochet'
+    //host: 'localhost',
+    //user: 'root',
+    //password: '', // Replace with your MySQL password if any
+    //database: 'cloudy_crochet'
+
+    host: 'freedb.tech',
+    user: 'username_created_for_freedb.tech',
+    password: 'password_created_for_freedb.tech', 
+    database: 'databaseName_created_for_freedb.tech'
 });
 
 // Connect to MySQL database
