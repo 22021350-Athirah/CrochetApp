@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloudy Crochet - Update Order</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #d3d3d3; 
+    }
+    .navbar-crochet {
+      background-color: #000000; 
+    }
+    .navbar-crochet .navbar-brand, .navbar-crochet .nav-link {
+      color: white;
+    }
+    .btn-brown {
+      background-color: #8b4513; 
+      color: white;
+    }
+    .btn-brown:hover {
+      background-color: #a0522d; 
+    }
+    .customer-image {
+      width: 150px; 
+      height: 150px; 
+      object-fit: cover; 
+      border-radius: 20px; 
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  
+  <nav class="navbar navbar-expand-sm navbar-crochet">
+    <div class="container-fluid">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link"><b>Cloudy Crochet</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/orders">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/feedback">Feedbacks</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h2>Update Order</h2>
+    <% if (customer) { %>
+    <form action="/editOrder/<%= customer.id %>" method="POST" enctype="multipart/form-data">
+
+      <div class="row mb-2">
+        <div class="col-2">
+          <label for="name" class="form-label">Customer Name:</label>
+        </div>
+        <div class="col-8">
+          <input type="text" id="name" name="name" value="<%= customer.name %>" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-2">
+          <label for="email" class="form-label">Email:</label>
+        </div>
+        <div class="col-8">
+          <input type="email" id="email" name="email" value="<%= customer.email %>" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-2">
+          <label for="currentImage" class="form-label">Current Image:</label>
+        </div>
+        <div class="col-8">
+          <% if (customer.image.startsWith('http')) { %>
+            <img src="<%= customer.image %>" class="customer-image" alt="Customer Image">
+          <% } else { %>
+            <img src="/images/<%= customer.image %>" class="customer-image" alt="Customer Image">
+          <% } %>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-2">
+          <label for="contact" class="form-label">Contact:</label>
+        </div>
+        <div class="col-8">
+          <input type="text" id="contact" name="contact" value="<%= customer.contact %>" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-2">
+          <label class="form-label">Upload Option:</label>
+        </div>
+        <div class="col-8">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="option" id="fileOption" value="file" <% if (customer.image.startsWith('/images/')) { %>checked<% } %>>
+            <label class="form-check-label" for="fileOption">Upload File</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="option" id="linkOption" value="link" <% if (!customer.image.startsWith('/images/')) { %>checked<% } %>>
+            <label class="form-check-label" for="linkOption">Provide Link</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2" id="fileInputRow" <% if (!customer.image.startsWith('/images/')) { %>style="display: none;"<% } %>>
+        <div class="col-2">
+          <label for="image" class="form-label">New Image:</label>
+        </div>
+        <div class="col-8">
+          <input type="file" id="image" name="image" accept="image/*" class="form-control">
+        </div>
+      </div>
+
+      <div class="row mb-2" id="linkInputRow" <% if (customer.image.startsWith('/images/')) { %>style="display: none;"<% } %>>
+        <div class="col-2">
+          <label for="link" class="form-label">Image Link:</label>
+        </div>
+        <div class="col-8">
+          <input type="text" id="link" name="link" value="<%= customer.image %>" class="form-control">
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-2"></div>
+        <div class="col-8">
+          <button type="submit" class="btn btn-brown">Update Order</button>
+        </div>
+      </div>
+
+    </form>
+    <% } else { %>
+    <p>No order found.</p>
+    <% } %>
+    
+    <div class="row mb-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <a href="/orders" >Back</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fileOption = document.getElementById('fileOption');
+    const linkOption = document.getElementById('linkOption');
+    const fileInputRow = document.getElementById('fileInputRow');
+    const linkInputRow = document.getElementById('linkInputRow');
+
+    fileOption.addEventListener('change', function() {
+      if (this.checked) {
+        fileInputRow.style.display = 'flex';
+        linkInputRow.style.display = 'none';
+      }
+    });
+
+    linkOption.addEventListener('change', function() {
+      if (this.checked) {
+        fileInputRow.style.display = 'none';
+        linkInputRow.style.display = 'flex';
+      }
+    });
+
+    // Initial check to display correct input based on initial state
+    if (fileOption.checked) {
+      fileInputRow.style.display = 'flex';
+    } else if (linkOption.checked) {
+      linkInputRow.style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
